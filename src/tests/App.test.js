@@ -3,7 +3,7 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
-import renderWithRouter from './aux/renderWithRouter';
+import renderWithRouter from './helper/renderWithRouter';
 
 describe('Testes do componente App', () => {
   test('Testa se o topo da aplicação contém um conjunto fixo de links de navegação',
@@ -33,6 +33,7 @@ describe('Testes do componente App', () => {
     () => {
       const { history } = renderWithRouter(<App />);
       const about = screen.getByRole('link', { name: 'About' });
+      // Quando o usuário clicar no about (tag link capturado na acima), eu espero que ele seja redirecionado para uma rota onde a location.pathname(URL atual) seja igual a /about. O mesmo serve para os testes posteriores
       userEvent.click(about);
       expect(history.location.pathname).toBe('/about');
     });
