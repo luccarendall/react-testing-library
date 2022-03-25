@@ -36,7 +36,8 @@ describe('Testes do componente Pokedex', () => {
       const pokemonTypeButton = screen.getAllByTestId(
         'pokemon-type-button',
       );
-      expect(pokemonTypeButton).toHaveLength(7);
+      const seven = 7;
+      expect(pokemonTypeButton).toHaveLength(seven);
       const button = screen.getByRole('button', { name: 'Fire' });
       expect(button).toBeInTheDocument();
     });
