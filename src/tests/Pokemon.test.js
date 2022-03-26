@@ -15,13 +15,21 @@ describe('Testes do componente Pokemon', () => {
       const PokemonWeight = screen.getByTestId('pokemon-weight');
       const PokemonCardImg = screen.getByAltText('Pikachu sprite');
 
-      expect(pokemoName).toBeInTheDocument('Pikachu');
-      expect(pokemonType).toBeInTheDocument('Electric');
-      expect(PokemonWeight).toBeInTheDocument('Average weight: 6.0 kg');
-      expect(PokemonCardImg.src).toBe('https://cdn2.bulbagarden.net/upload/b/b2/Spr_5b_025_m.png');
+      expect(pokemoName).toHaveTextContent('Pikachu');
+      expect(pokemonType).toHaveTextContent('Electric'); // Antes estava colocando toBeInTheDocument e o stryker apontou erro. Entender o motivo. Tb testei toBe mas o npm apontou erro
+      expect(PokemonWeight).toHaveTextContent('Average weight: 6.0 kg');
+      expect(PokemonCardImg.src).toEqual('https://cdn2.bulbagarden.net/upload/b/b2/Spr_5b_025_m.png');
     });
 
   test('Testa se o card indicado na Pokédex contém um link que exibe detalhes',
+    () => {
+      renderWithRouter(<App />);
+      const moreDetailsLink = screen.getByRole('link', { name: /more details/i });
+
+      expect(moreDetailsLink).toBeInTheDocument();
+    });
+
+  test('Testa se ao clicar no link do Pokémon, sou redirecionado p/ a página de detalhes',
     () => {
       const { history } = renderWithRouter(<App />);
       const moreDetailsLink = screen.getByRole('link', { name: /more details/i });
@@ -31,7 +39,7 @@ describe('Testes do componente Pokemon', () => {
       expect(history.location.pathname).toEqual('/pokemons/25');
     });
 
-  test('Testa se ao clicar no link do Pokémon, sou redirecionado p/ a página de detalhes',
+  test('Testa se existe um ícone de estrela nos Pokémons favoritados',
     () => {
       const { history } = renderWithRouter(<App />);
       history.push('/pokemons/25');
@@ -44,11 +52,5 @@ describe('Testes do componente Pokemon', () => {
       expect(favoriteStar).toBeInTheDocument();
       expect(favoriteStar.src).toContain('/star-icon.svg');
     });
-
-  //   test('Testa se a URL exibida no navegador muda para /pokemon/<id>',
-  //     () => {
-  //     });
-  //   test('Testa se existe um ícone de estrela nos Pokémons favoritados',
-  //     () => {
   //     });
 });
